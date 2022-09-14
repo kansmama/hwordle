@@ -1,0 +1,16 @@
+[package]
+edition = "2021"
+name = "zome_0"
+version = "0.0.1"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+name = "zome_0"
+
+[dependencies]
+serde = "=1.0.136"
+chrono = "=0.4.19"
+derive_more = "0"
+zome_0_integrity = { path = "../../integrity_zomes/zome_0_integrity" }
+
+hdk = "0.0.142"

@@ -1,0 +1,20 @@
+# pack-refs with: peeled fully-peeled sorted 
+81e6ec14092c56e93b20daf126ae269baf210de9 refs/remotes/origin/add-code-of-conduct-1
+8c538ecada59152d55269791794abd0e8a402c1e refs/remotes/origin/add-license-1
+ef145f90b95444c2d22ec69a17ad12b7b049c6fb refs/remotes/origin/chase/add-list-locale-link
+258783b32078199d3ce17d0d4a8a3307bd1a8cbd refs/remotes/origin/dependabot/docker/docker/nginx-1.23.1-alpine
+b80c587ed0776388a4ddc6803341b47036e701ce refs/remotes/origin/dependabot/docker/docker/node-18.3.0-alpine3.14
+0910db8d63d7401ff9251c4b1bc8a311a9309ea1 refs/remotes/origin/dependabot/npm_and_yarn/headlessui/react-1.6.6
+60b872ec3fcde772fecb166859d25bbe215df0b7 refs/remotes/origin/dependabot/npm_and_yarn/lint-staged-13.0.3
+c6876b87657b50c02efcf74f7ee3b220e10d137d refs/remotes/origin/dependabot/npm_and_yarn/testing-library/react-12.1.5
+b59efec32fd488fd0b46fc32a9990cd231f44ab0 refs/remotes/origin/dependabot/npm_and_yarn/types/jest-28.1.8
+bf13af6347d68db7b188ceac734aa0e89e771fd2 refs/remotes/origin/dependabot/npm_and_yarn/types/node-18.7.13
+55b3da3d321b634427f767bc991e2baa3c20b38a refs/remotes/origin/develop
+5c1e045d8ec22caf52181d9b9965b5ac6b6547e3 refs/remotes/origin/first-visit-how-to
+5f016cb7bd2d90a9f80ef18246f271b20eb69a4d refs/remotes/origin/fix-layout
+68588014e3c5a7179890fa3a491fb90e2c07e43b refs/remotes/origin/fix-max-challenge-var
+697abd0b36b017e9679fcabbb0b679a866d2a68d refs/remotes/origin/layout-improvements-to-settings-menu
+4c128a9114026b404a4d2e4e9e8164c20fe011cf refs/remotes/origin/main
+1fccfb7423429a6eaba0512f7af4d84d07ef0d2a refs/remotes/origin/move-about-button
+8120bdb835fc308b88f767ee9e1672586092d98f refs/remotes/origin/support-reveal-animation-for-n-length-guesses
+70e7d96b02fbdcdfbe408310756fb31bbfb29fea refs/remotes/origin/update-to-react-18

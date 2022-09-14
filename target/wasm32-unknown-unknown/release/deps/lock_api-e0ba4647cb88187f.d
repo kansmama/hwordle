@@ -1,0 +1,10 @@
+/home/kns/Coding/test/my-app3/target/wasm32-unknown-unknown/release/deps/lock_api-e0ba4647cb88187f.rmeta: /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/lib.rs /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/mutex.rs /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/remutex.rs /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/rwlock.rs
+
+/home/kns/Coding/test/my-app3/target/wasm32-unknown-unknown/release/deps/liblock_api-e0ba4647cb88187f.rlib: /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/lib.rs /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/mutex.rs /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/remutex.rs /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/rwlock.rs
+
+/home/kns/Coding/test/my-app3/target/wasm32-unknown-unknown/release/deps/lock_api-e0ba4647cb88187f.d: /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/lib.rs /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/mutex.rs /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/remutex.rs /home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/rwlock.rs
+
+/home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/lib.rs:
+/home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/mutex.rs:
+/home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/remutex.rs:
+/home/kns/Coding/test/my-app1/.cargo/registry/src/github.com-1ecc6299db9ec823/lock_api-0.4.7/src/rwlock.rs:
