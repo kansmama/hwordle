@@ -6,8 +6,8 @@ use zome_0_integrity::EntryTypes;
 
 #[hdk_extern]
 pub fn get_test(s: String) -> ExternResult<String> {
-  let a: String =  "pambalakidijamba".to_string();
-  let b: String =  "jambalakidipamba".to_string();
+  let a: String =  "testconnecth".to_string();
+  let b: String =  "noconnecth".to_string();
   if s=="connecth" {
   Result::Ok(a)}
   else { Result::Ok(b)}
