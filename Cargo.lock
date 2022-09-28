@@ -1693,3 +1693,24 @@ dependencies = [
  "hdi",
  "serde",
 ]
+
+[[package]]
+name = "zome_1"
+version = "0.0.1"
+dependencies = [
+ "chrono",
+ "derive_more",
+ "hdk",
+ "serde",
+ "zome_1_integrity",
+]
+
+[[package]]
+name = "zome_1_integrity"
+version = "0.0.1"
+dependencies = [
+ "chrono",
+ "derive_more",
+ "hdi",
+ "serde",
+]

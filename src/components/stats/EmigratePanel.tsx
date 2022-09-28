@@ -10,7 +10,7 @@ import { MigrationStats } from '../modals/MigrateStatsModal'
 export const EmigratePanel = () => {
   const [isCopyButtonEnabled, setIsCopyButtonEnabled] = useState(true)
   const [copyButtonText, setCopyButtonText] = useState('Copy')
-  const stats = loadStats()
+  /*const stats = loadStats()
   const gameState = loadGameStateFromLocalStorage(true)
 
   const migrationStats: MigrationStats = {
@@ -18,7 +18,8 @@ export const EmigratePanel = () => {
     gameState: gameState,
   }
 
-  const emigrationCode = encrypt(JSON.stringify(migrationStats))
+  const emigrationCode = encrypt(JSON.stringify(migrationStats))*/
+  const emigrationCode = "migrate";
 
   const copyEmigrationCodeToClipboard = () => {
     copyTextToClipboard(emigrationCode)

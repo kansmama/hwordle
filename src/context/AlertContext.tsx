@@ -8,7 +8,7 @@ import {
 
 import { ALERT_TIME_MS } from '../constants/settings'
 
-type AlertStatus = 'success' | 'error' | undefined
+type AlertStatus = 'success' | 'error' | 'welcome back' | undefined
 
 type ShowOptions = {
   persist?: boolean
@@ -23,6 +23,7 @@ type AlertContextValue = {
   isVisible: boolean
   showSuccess: (message: string, options?: ShowOptions) => void
   showError: (message: string, options?: ShowOptions) => void
+  welcomeBack: (message: string, options?: ShowOptions) => void
 }
 
 export const AlertContext = createContext<AlertContextValue | null>({
@@ -31,6 +32,7 @@ export const AlertContext = createContext<AlertContextValue | null>({
   isVisible: false,
   showSuccess: () => null,
   showError: () => null,
+  welcomeBack: () => null,
 })
 AlertContext.displayName = 'AlertContext'
 
@@ -85,6 +87,12 @@ export const AlertProvider = ({ children }: Props) => {
     },
     [show]
   )
+  const welcomeBack = useCallback(
+    (newMessage: string, options?: ShowOptions) => {
+      show('welcome back', newMessage, options)
+    },
+    [show]
+  )
 
   return (
     <AlertContext.Provider
@@ -94,6 +102,7 @@ export const AlertProvider = ({ children }: Props) => {
         isVisible,
         showError,
         showSuccess,
+        welcomeBack,
       }}
     >
       {children}

@@ -14,7 +14,8 @@ import {
   SHARE_TEXT,
   STATISTICS_TITLE,
 } from '../../constants/strings'
-import { GameStats } from '../../lib/localStorage'
+//import { GameStats } from '../../lib/localStorage'
+import { GameStats } from '../../types/dna_0/zome_1'
 import { shareStatus } from '../../lib/share'
 import { solutionGameDate, tomorrow } from '../../lib/words'
 import { Histogram } from '../stats/Histogram'
@@ -57,7 +58,7 @@ export const StatsModal = ({
   isHighContrastMode,
   numberOfGuessesMade,
 }: Props) => {
-  if (gameStats.totalGames <= 0) {
+  if (gameStats.total_games <= 0) {
     return (
       <BaseModal
         title={STATISTICS_TITLE}

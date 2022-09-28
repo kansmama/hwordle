@@ -9,6 +9,7 @@ const webShareApiDeviceTypes: string[] = ['mobile', 'smarttv', 'wearable']
 const parser = new UAParser()
 const browser = parser.getBrowser()
 const device = parser.getDevice()
+const FAILED_GUESS_EMOJI = ["🤪","🤥","🤮","🥵","🤧","🤢","🥶","🥴","😵‍💫"]
 
 export const shareStatus = (
   solution: string,
@@ -28,7 +29,7 @@ export const shareStatus = (
       solution,
       guesses,
       getEmojiTiles(isDarkMode, isHighContrastMode)
-    )
+    ) + '...' + getEmojiSuccess(guesses.includes(solution))
 
   const shareData = { text: textToShare }
 
@@ -77,12 +78,12 @@ export const generateEmojiGrid = (
             case 'present':
               return tiles[1]
             default:
-              return tiles[2]
+              return FAILED_GUESS_EMOJI[Math.floor(Math.random() * FAILED_GUESS_EMOJI.length)]
           }
         })
         .join('')
     })
-    .join('\n')
+    .join('   '+FAILED_GUESS_EMOJI[Math.floor(Math.random() * FAILED_GUESS_EMOJI.length)]+'\n')
 }
 
 const attemptShare = (shareData: object) => {
@@ -102,4 +103,12 @@ const getEmojiTiles = (isDarkMode: boolean, isHighContrastMode: boolean) => {
   tiles.push(isHighContrastMode ? '🟦' : '🟨')
   tiles.push(isDarkMode ? '⬛' : '⬜')
   return tiles
+}
+
+const getEmojiSuccess = (isGameWon: boolean) => {
+  if (isGameWon) {
+  return '🥳'
+  } else {
+  return '💔'
+  }
 }

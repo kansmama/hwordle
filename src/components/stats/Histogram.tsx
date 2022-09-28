@@ -1,4 +1,5 @@
-import { GameStats } from '../../lib/localStorage'
+//import { GameStats } from '../../lib/localStorage'
+import { GameStats } from '../../types/dna_0/zome_1'
 import { Progress } from './Progress'
 
 type Props = {
@@ -23,12 +24,12 @@ export const Histogram = ({
   isGameWon,
   numberOfGuessesMade,
 }: Props) => {
-  const winDistribution = gameStats.winDistribution
-  const maxValue = Math.max(...winDistribution, 1)
+  const win_distribution = gameStats.win_distribution
+  const maxValue = Math.max(...win_distribution, 1)
 
   return (
     <div className="justify-left m-2 columns-1 text-sm dark:text-white">
-      {winDistribution.map((value, i) => (
+      {win_distribution.map((value, i) => (
         <Progress
           key={i}
           index={i}

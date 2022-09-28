@@ -1,0 +1,1 @@
+/home/kns/Coding/test/hwordle/target/wasm32-unknown-unknown/release/zome_1_integrity.wasm: /home/kns/Coding/test/hwordle/dna/integrity_zomes/zome_1_integrity/src/lib.rs /home/kns/Coding/test/hwordle/dna/integrity_zomes/zome_1_integrity/src/stats/definition.rs /home/kns/Coding/test/hwordle/dna/integrity_zomes/zome_1_integrity/src/stats/mod.rs

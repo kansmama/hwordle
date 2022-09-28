@@ -5,7 +5,7 @@ import { Fragment } from 'react'
 type Props = {
   isOpen: boolean
   message: string
-  variant?: 'success' | 'error'
+  variant?: 'success' | 'error' | 'welcome back'
   topMost?: boolean
 }
 
@@ -20,6 +20,7 @@ export const Alert = ({
     {
       'bg-rose-500 text-white': variant === 'error',
       'bg-blue-500 text-white': variant === 'success',
+      'bg-green-500 text-white': variant === 'welcome back',
     }
   )
 

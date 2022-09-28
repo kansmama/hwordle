@@ -21,6 +21,7 @@ import { decode } from '@msgpack/msgpack';
 import { appInfoContext } from './contexts';
 //import { appWebsocketContext, appInfoContext } from './contexts';
 import { StoredGameState,UpdateStoredGameState } from './types/dna_0/zome_0';
+import { GameStats } from './types/dna_0/zome_1';
 //*/
 import { ClockIcon } from '@heroicons/react/outline'
 import { format } from 'date-fns'
@@ -63,7 +64,7 @@ import {
   //saveGameStateToLocalStorage,
   setStoredIsHighContrastMode,
 } from './lib/localStorage'
-import { addStatsForCompletedGame, loadStats } from './lib/stats'
+import { addStatsForCompletedGame, loadStats,loadDefaultStats } from './lib/stats'
 import {
   findFirstUnusedReveal,
   getGameDate,
@@ -80,12 +81,15 @@ import {
   //console.log("before Holochain code");
   let gameWasWon: boolean = false;
   let gameWasLost: boolean = false;
+  let gameIsOn: boolean = false;
   let isNewGuess: boolean = false;
   let todayStart: boolean = true;
   let testVar: String = "testVar before callZome";
   let holBool: String = "1";
   let appInfo: InstalledAppInfo;
-  let loaded: StoredGameState = {local: (new Date()).toString(), guesses: [], solution:solution};
+  let gStats: GameStats = loadDefaultStats();
+  let statsUpdated: number = 0;
+  let loaded: StoredGameState = {local: (new Date()).toString(), guesses: [], solution:''};
   console.log("loaded value changed guesses[0], solution: "+loaded.guesses[0]+","+loaded.solution);
   //let appInfoBool: boolean = false;
   let client: AppWebsocket;
@@ -151,15 +155,7 @@ import {
   if(!appInfo) {console.log("appInfo after await - null");}
   else {
   console.log("appInfo after await not null"+appInfo);
-  //App.forceUpdate();
-  //setGuesses(callHappLoadGame().guesses);
-  //Grid.forceUpdate();
-  //appInfoBool = true;
   }
- // const cellData = appInfo.cell_data.find((c: InstalledCell) => c.role_id === 'dna_0')!;
-
-  //return "holochain mounted";
-//}
 
 }
 //*/
@@ -266,12 +262,10 @@ return;
 }
 
 export function callHappLoadGame () {
-let b: boolean = true;
 loaded = {local: (new Date()).toString(), guesses: [''], solution:''};
 if (!appInfo) {
 
 console.log ("appInfo is null");
-b = false;
 return loaded;} else {
 const cHappLoadGame = async() => {
  const cellData = await appInfo.cell_data;
@@ -306,16 +300,13 @@ const cHappLoadGame = async() => {
     console.log ("we already have today's entry, so update has to be run");
     todayStart = false;
     }
-  } else {b = false;}
+  }
   }
   console.log ("outout is ");
   cHappLoadGame();
   console.log(cHappLoadGame);
 }
 console.log ("callHappLoadGame else code ran - did callZome work? ");
-if (!b) {return loaded;} else {
-return loaded;
-}
 }
 
 
@@ -330,11 +321,12 @@ function App() {
     '(prefers-color-scheme: dark)'
   ).matches
 
-  const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
+  const { showError: showErrorAlert, showSuccess: showSuccessAlert, welcomeBack: showWelcomeBack } =
     useAlert()
   const [currentGuess, setCurrentGuess] = useState('')
   const [appInfoBool, setAppInfoBool] = useState(false)
   const [isGameWon, setIsGameWon] = useState(false)
+  const [isGameOn, setIsGameOn] = useState(false)
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const [isDatePickerModalOpen, setIsDatePickerModalOpen] = useState(false)
@@ -357,12 +349,6 @@ function App() {
     localStorage.setItem("gameDate",(new Date()).toLocaleDateString());
     localStorage.setItem("actionHashString","");
     }
- /* console.log("before calling Happ Save Game");
-  callHappSaveGame(['aaaaa'],'aaaaa');
-  console.log("after calling Happ Save Game");*/
-
-
-  const [stats, setStats] = useState(() => loadStats())
 
   const [isHardMode, setIsHardMode] = useState(
     localStorage.getItem('gameMode')
@@ -414,7 +400,7 @@ function App() {
   }
 
   const handleHardMode = (isHard: boolean) => {
-    if (guesses.length === 0 || localStorage.getItem('gameMode') === 'hard') {
+    if (loaded.guesses.length === 0 || localStorage.getItem('gameMode') === 'hard') {
       setIsHardMode(isHard)
       localStorage.setItem('gameMode', isHard ? 'hard' : 'normal')
     } else {
@@ -433,6 +419,7 @@ function App() {
 
 
   useEffect(() => {
+    console.log("isGameWon:"+isGameWon+"isGameLost:"+isGameLost+"isGameOn:"+isGameOn);
     if (isGameWon) {
       console.log("inside useEffect isGameWon");
       /*const won = async() => {
@@ -457,13 +444,42 @@ function App() {
         setIsStatsModalOpen(true)
       }, (solution.length + 1) * REVEAL_TIME_MS)
     }
+    if (isGameOn) {
+    console.log("UseEffect Game on");
+      const welcomeMessage =
+        "Welcome Back"
+      const delayMs = REVEAL_TIME_MS * solution.length
 
-  }, [isGameWon, isGameLost, showSuccessAlert])
+      showSuccessAlert(welcomeMessage, {
+        delayMs,
+        onClose: () => {
+        gameIsOn = false;
+        setIsGameOn(false)
+        },
+      })
+     /* const winMessage =
+        WIN_MESSAGES[Math.floor(Math.random() * WIN_MESSAGES.length)]
+      const delayMs = REVEAL_TIME_MS * solution.length
+
+      showSuccessAlert(winMessage, {
+        delayMs,
+        onClose: () => setIsStatsModalOpen(true),
+      })*/
+    }
+
+  }, [isGameWon, isGameLost, showSuccessAlert, isGameOn])
 
   const onChar = (value: string) => {
+    let tempDate: Date = new Date();
+    let tempDate1: Date = new Date(loaded.local);
+    if (!((tempDate1.getFullYear() === tempDate.getFullYear()) && (tempDate1.getMonth() === tempDate.getMonth()) && (tempDate1.getDate() === tempDate.getDate()))) {
+    window.location.reload();
+    return;
+    }    
+    
     if (
       unicodeLength(`${currentGuess}${value}`) <= solution.length &&
-      guesses.length < MAX_CHALLENGES &&
+      loaded.guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
       setCurrentGuess(`${currentGuess}${value}`)
@@ -476,8 +492,14 @@ function App() {
     )
   }
 
-  const onEnter = () => {
+  const onEnter = async () => {
 
+    let tempDate: Date = new Date();
+    let tempDate1: Date = new Date(loaded.local);
+    if (!((tempDate1.getFullYear() === tempDate.getFullYear()) && (tempDate1.getMonth() === tempDate.getMonth()) && (tempDate1.getDate() === tempDate.getDate()))) {
+    window.location.reload();
+    return;
+    }     
     if (isGameWon || isGameLost) {
       return
     }
@@ -507,7 +529,7 @@ function App() {
 
     // enforce hard mode - all guesses must contain all previously revealed letters
     if (isHardMode) {
-      const firstMissingReveal = findFirstUnusedReveal(currentGuess, guesses)
+      const firstMissingReveal = findFirstUnusedReveal(currentGuess, loaded.guesses)
       if (firstMissingReveal) {
         setCurrentRowClass('jiggle')
         return showErrorAlert(firstMissingReveal, {
@@ -527,25 +549,27 @@ function App() {
 
     if (
       unicodeLength(currentGuess) === solution.length &&
-      guesses.length < MAX_CHALLENGES &&
+      loaded.guesses.length < MAX_CHALLENGES &&
       !isGameWon
     ) {
       console.log("inside big if in onEnter");
-      isNewGuess = true;
-      setGuesses([...guesses, currentGuess])
+      loaded.guesses.push(currentGuess)
       setCurrentGuess('')
+      await callHappSaveGame(loaded.guesses, solution);
 
       if (winningWord) {
         if (isLatestGame) {
 
-          setStats(addStatsForCompletedGame(stats, guesses.length))
+          gStats = await addStatsForCompletedGame(loaded.guesses.length-1, client, appInfo)
+          console.log("after gStats updated: "+gStats.total_games+gStats.win_distribution[0]+gStats.win_distribution[1]+gStats.win_distribution[2]+gStats.win_distribution[3]+gStats.win_distribution[4]+gStats.win_distribution[5]+gStats.win_distribution[6]);
+
         }
         return setIsGameWon(true)
       }
 
-      if (guesses.length === MAX_CHALLENGES - 1) {
+      if (loaded.guesses.length === MAX_CHALLENGES) {
         if (isLatestGame) {
-          setStats(addStatsForCompletedGame(stats, guesses.length + 1))
+          gStats = await addStatsForCompletedGame(loaded.guesses.length, client, appInfo)
         }
         setIsGameLost(true)
         showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
@@ -557,14 +581,12 @@ function App() {
   }
 const cHappLoadGame = async() => {
  
- let loaded3: StoredGameState = {local: (new Date()).toString(), guesses: [], solution:solution};
- if (!appInfo) { return loaded3;}
+ let loaded3: StoredGameState = {local: (new Date()).toString(), guesses: [], solution:''};
+ if (!appInfo) { 
+   console.log("in cHappLoadGame. appInfo is null!!!");
+ return loaded3;}
  const cellData = await appInfo.cell_data;
  const cell_id = await cellData[0].cell_id;
- /*  const gameState: StoredGameState = {
-    guesses: guesses,
-        content: solution
-  };*/
 
    console.log ("in cHappLoadGame - code before loadHash assigned value"+actionHashString);
    let loadHash: ActionHash = actionHash;
@@ -580,7 +602,7 @@ const cHappLoadGame = async() => {
    provenance: cell_id[1],
    payload: loadHash,
   }, 30000)
-  console.log ("in callHappLoadGame cHappLoadGame - code after callZome" + todayStart);
+  console.log ("in cHappLoadGame - code after callZome" + todayStart);
     if (record) {
     console.log ("in if record before decode");
     loaded3 = decode((record.entry as any).Present.entry) as StoredGameState;
@@ -593,7 +615,8 @@ const cHappLoadGame = async() => {
     } else {
     console.log("date changed. The date in Holochain entry is: "+tempDate1.getFullYear()+tempDate1.getMonth()+tempDate1.getDate());
     localStorage.setItem("actionHashString","");
-    loaded3 = {local: (new Date(0,0,0)).toString(), guesses: [], solution:""};
+    loaded3 = {local: (new Date()).toString(), guesses: [], solution:""};
+    todayStart = true;
     loaded = loaded3;
     return loaded3;
     }
@@ -601,48 +624,11 @@ const cHappLoadGame = async() => {
   console.log ("in cHappLoadGame just before return: "+loaded3.local+loaded3.solution+"guesses[0]:"+loaded3.guesses[0]+"guesses[1]:"+loaded3.guesses[1]);
   return loaded3;
   } 
-  const [guesses, setGuesses] = useState<string[]>(() => {
-    //const loaded = loadGameStateFromLocalStorage(isLatestGame)
-   /* do {
-    console.log("actionHash is null");
-    }
-    while (!actionHash);*/
-    //if (!localStorage.getItem("actionHashString")) { return []}
-   /* console.log("at the start of setGuesses");
-    let isConnected: boolean = false;
-    let loaded1: StoredGameState = loaded;
-    const load = async() => {
-    loaded1 = await hoMount();
-    console.log("in setGuesses before await cHappLoadGame");
-    //loaded1 = await cHappLoadGame();
-        console.log("in setGuesses after loaded useState, date, guess, solution = "+loaded1?.local+","+loaded1?.guesses[0]+", "+loaded1?.solution);
-    if (loaded1?.solution !== solution) {
-      return []
-    }
-    const gameWasWon = loaded1.guesses.includes(solution)
-    if (gameWasWon) {
-      setIsGameWon(true)
-    }
-    if (loaded1.guesses.length === MAX_CHALLENGES && !gameWasWon) {
-      setIsGameLost(true)
-      showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
-        persist: true,
-      })
-    }
-    isConnected = true;
-    }
-    console.log("in setGuesses before load()");
-    setTimeout(() => {
-    load();},13000000000);
-    console.log("in setGuesses after load() "+ loaded1.solution + "isConnected is "+isConnected);
-    //return loaded1.guesses;*/
-    return [];
-  })
+
   
     const hoMount = async() => {
 
 	let loaded2: StoredGameState = loaded;
-    //experiments.topLevelAwait(true)
     console.log ("in hoMount, before Admin connect");
   /*  const admin = await AdminWebsocket.connect(`ws://localhost:44179`, 30000)
     console.log ("in hoMount, after Admin connect");
@@ -651,7 +637,6 @@ const cHappLoadGame = async() => {
   console.log ("in hoMount, after AgentPubKey");*/
 
 
-  //Set experiments.topLevelAwait: true;
   console.log ("in hoMount before signalCb");
 
   const signalCb = (signal: AppSignal) => {
@@ -665,55 +650,42 @@ const cHappLoadGame = async() => {
   if(!client) {
   console.log("Appwebsocket.connect is null");
   }
-  //let {appInfo}: InstalledAppInfo;
- // document.createElement("script");
- // setContext(appInfoContext, { getAppInfo: () => appInfo });
- // const { appIC } = getContext(appInfoContext);
- //let insAppId: InstalledAppId = client.overrideInstalledAppId;
- //let appInfoReq: AppInfoRequest = {insAppId}
- //let insAppId : InstalledAppId = 'hwordle';
- 
- //const t = async() => {
- console.log ("in t");
+
  const insAppId = "hwordle";
  //let appInfoReq: AppInfoRequest = {insAppId}
   appInfo = await client.appInfo({installed_app_id: insAppId});
   if(!appInfo) {console.log("appInfo after await - null");}
   else {
-  //loaded = await cHappLoadGame();
   if (!isLoaded) {
   console.log("appInfo after await not null"+appInfo+loaded2.guesses[0]+loaded2.guesses[1]);
-  //await setGuesses([...guesses, loaded.guesses[0]]);
   isLoaded = true;
   console.log("isLoaded value is "+isLoaded);
+  try {
+  gStats = await loadStats(client, appInfo);
+  } catch (err) {
+  console.log(err)
+  } 
+  console.log("initiating gStats total_games: "+gStats.total_games);
   } else {
   console.log ("appInfo already loaded");
   isParallelConnect = true;
   return
   }
-  //setGuesses([...guesses,loaded.guesses[0]]);
-   // console.log("after setGuesses: "+guesses[0]+","+guesses[1]);
-  //App.forceUpdate();
-  //setGuesses(callHappLoadGame().guesses);
-  //Grid.forceUpdate();
-  //appInfoBool = true;
 
 
-  
+
+  console.log("at the end of else block of if(!appInfo)");
   }
- // const cellData = appInfo.cell_data.find((c: InstalledCell) => c.role_id === 'dna_0')!;
 
-  //return "holochain mounted";
-//}
+  console.log("before checking actioHashString");
   if (localStorage.getItem("actionHashString") == "") {
   todaysGameLoaded=0;
   return;
   }
+  console.log("before cHappLoadGame is called");
   loaded2 = (await cHappLoadGame());
   console.log("before hoMount return loaded2:  "+ loaded2.local+"guesses[0]:"+loaded2.guesses[0]+"guesses[1]:"+loaded2.guesses[1]+loaded2.solution);
-  //setGuesses(["ABODE"]);
-  console.log(guesses[0] + ","+guesses[1]);
-  console.log("just checking");
+
     if (loaded2?.solution !== solution) {
     	todayStart = true;
         return []
@@ -744,11 +716,16 @@ const cHappLoadGame = async() => {
       showErrorAlert(CORRECT_WORD_MESSAGE(solution), {
         persist: true,
       })
+    } else {
+    console.log("setting Game on");
+    gameIsOn = !gameWasWon;
+      if (gameIsOn) {
+        await setIsGameOn(true);
+        console.log("Finished setting Game on");
+      }
     }
-    console.log("guesses before setGuesses: "+guesses[0]+","+guesses[1]+";"+"loaded2.guesses before setGuesses:  "+loaded2.guesses[0]+","+loaded2.guesses[1]);
-    //await setGuesses([...loaded2.guesses]);
     loaded = loaded2;
-    console.log("loaded is now the output of cHappLoadGame");
+    console.log("loaded is now the output of cHappLoadGame"+loaded.guesses[0]);
   return loaded2;
 }
 
@@ -764,33 +741,42 @@ const cHappLoadGame = async() => {
 	  setIsGameLost(true);
 	  console.log("is game lost is "+ isGameLost)
 	  isParallelConnect = true;
-	  }	  
+	  }
+	  if(gameIsOn && !isGameOn) {
+	  console.log("game is on second loop");
+	  setIsGameOn(true);
+	  console.log("is game On is "+ isGameOn)
+	  isParallelConnect = true;
+	  }
 	  if ((localStorage.getItem("holConnect")=="No") && (!isParallelConnect)) {
+
 	  	const loadTodaysGame = async() => {
 		  	await hoMount();
 		  	if(!isParallelConnect) {
 			  	console.log("holConnect value is "+localStorage.getItem("holConnect"));
-			  	if (loaded) {
+			  	if (isLoaded) {
 			  	  console.log("holConnect being changed to Yes");
 	  localStorage.setItem("holConnect","Yes");
+	  loaded.solution = solution;
 	  			}
 			  	console.log("after hoMount in holConnect check");
 			  	console.log("after hoMount in holConnect check loaded.guesses updated: "+loaded.guesses[0]+","+loaded.guesses[1]+","+loaded.guesses[2]+","+loaded.guesses[3]);
-			  	if ((!todayStart)) {
+			  	/*if ((!todayStart)) {
 			  	
 			  	todaysGameLoaded++;
 			  	console.log("todaysGameLoaded(holochain being connected) is "+todaysGameLoaded);
 			  	if((todaysGameLoaded == 1)) {
 		  	  console.log("setting guesses as holochain entry already updated today(holochain being connected)"+loaded.guesses[0]);
 			  setGuesses([...loaded.guesses]);
+
 			  console.log("guesses(holochain being connected) are "+guesses[0]+guesses[1]);
 				} else {console.log("not 1");}
 			  	
-			  	}
+			  	}*/
 			  }
 			 }
 		  loadTodaysGame();
-	  } else {
+	  } /*else {
 	  if (!isParallelConnect) {
 		  console.log("holochain already connected");
 		  console.log("todaysGameLoaded (holochain already connected, before if) is "+todaysGameLoaded);
@@ -802,21 +788,13 @@ const cHappLoadGame = async() => {
 			todaysGameLoaded++;
 			console.log("todaysGameLoaded (holochain already connected, after if) is "+todaysGameLoaded);
 		  }
-		 }
+		 }*/
 	isParallelConnect = false;
 	//} else {isParallelConnect = false;}
 
 
-  useEffect(() => {
-    //saveGameStateToLocalStorage(getIsLatestGame(), { guesses, solution })
-    //callHappLoadGame();
-    console.log("guesses has been updated");
-    if (isNewGuess && (guesses.length > 0)) {
-    console.log("guesses has been updated and isNewGuess");
-    callHappSaveGame(guesses, solution);
-    isNewGuess = false;
-    }
-  }, [guesses])
+
+
    /* useEffect(() => {
     console.log ("in useEffect loaded at the start");
     if ((loaded.guesses.length > 0) && (loaded.guesses[0]!='') && isLoaded) {
@@ -832,7 +810,8 @@ const cHappLoadGame = async() => {
     }
     },[appInfoBool])*/
     
-    
+  //console.log("Just before statsUpdated, gStats.total_games: " +gStats.total_games);
+
 
   return (
     <Div100vh>
@@ -859,7 +838,7 @@ const cHappLoadGame = async() => {
           <div className="flex grow flex-col justify-center pb-6 short:pb-2">
             <Grid
               solution={solution}
-              guesses={guesses}
+              guesses={loaded.guesses}
               currentGuess={currentGuess}
               isRevealing={isRevealing}
               currentRowClassName={currentRowClass}
@@ -870,19 +849,35 @@ const cHappLoadGame = async() => {
             onDelete={onDelete}
             onEnter={onEnter}
             solution={solution}
-            guesses={guesses}
+            guesses={loaded.guesses}
             isRevealing={isRevealing}
           />
           <InfoModal
             isOpen={isInfoModalOpen}
-            handleClose={() => setIsInfoModalOpen(false)}
+            handleClose={() => {
+            setIsInfoModalOpen(false)
+            let tempDate: Date = new Date();
+            let tempDate1: Date = new Date(loaded.local);
+            if (!((tempDate1.getFullYear() === tempDate.getFullYear()) && (tempDate1.getMonth() === tempDate.getMonth()) && (tempDate1.getDate() === tempDate.getDate()))) {
+              window.location.reload();
+               }    
+              }            
+            }
           />
           <StatsModal
             isOpen={isStatsModalOpen}
-            handleClose={() => setIsStatsModalOpen(false)}
+            handleClose={() => {
+            setIsStatsModalOpen(false)
+            let tempDate: Date = new Date();
+            let tempDate1: Date = new Date(loaded.local);
+            if (!((tempDate1.getFullYear() === tempDate.getFullYear()) && (tempDate1.getMonth() === tempDate.getMonth()) && (tempDate1.getDate() === tempDate.getDate()))) {
+              window.location.reload();
+               }    
+              }
+            }
             solution={solution}
-            guesses={guesses}
-            gameStats={stats}
+            guesses={loaded.guesses}
+            gameStats={gStats}
             isLatestGame={isLatestGame}
             isGameLost={isGameLost}
             isGameWon={isGameWon}
@@ -900,7 +895,7 @@ const cHappLoadGame = async() => {
             isHardMode={isHardMode}
             isDarkMode={isDarkMode}
             isHighContrastMode={isHighContrastMode}
-            numberOfGuessesMade={guesses.length}
+            numberOfGuessesMade={loaded.guesses.length}
           />
           <DatePickerModal
             isOpen={isDatePickerModalOpen}
@@ -917,7 +912,15 @@ const cHappLoadGame = async() => {
           />
           <SettingsModal
             isOpen={isSettingsModalOpen}
-            handleClose={() => setIsSettingsModalOpen(false)}
+            handleClose={() => {
+            setIsSettingsModalOpen(false)
+            let tempDate: Date = new Date();
+            let tempDate1: Date = new Date(loaded.local);
+            if (!((tempDate1.getFullYear() === tempDate.getFullYear()) && (tempDate1.getMonth() === tempDate.getMonth()) && (tempDate1.getDate() === tempDate.getDate()))) {
+              window.location.reload();
+               }    
+              }            
+            }
             isHardMode={isHardMode}
             handleHardMode={handleHardMode}
             isDarkMode={isDarkMode}

@@ -8,6 +8,8 @@ integrity:
   zomes:
     - name: zome_0_integrity
       bundled: ../../target/wasm32-unknown-unknown/release/zome_0_integrity.wasm
+    - name: zome_1_integrity
+      bundled: ../../target/wasm32-unknown-unknown/release/zome_1_integrity.wasm
 
 coordinator:
   zomes:
@@ -15,4 +17,7 @@ coordinator:
       bundled: ../../target/wasm32-unknown-unknown/release/zome_0.wasm
       dependencies:
         - name: zome_0_integrity
-
+    - name: zome_1
+      bundled: ../../target/wasm32-unknown-unknown/release/zome_1.wasm
+      dependencies:
+        - name: zome_1_integrity
