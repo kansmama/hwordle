@@ -8,9 +8,13 @@ The guesses made by the user and the stats are currently stored in the Holochain
 HWordle 270 4/6
 
 🟨🟩🥶🟨🤢   🤥
+
 🟨🥴🟨🤧🟨   🤥
+
 🟩🟩🤧🥵🟩   🤥
+
 🟩🟩🟩🟩🟩...🥳
+
 In future, more items like wordlist etc can also be moved to Holochain.
 
 ## Build and run
