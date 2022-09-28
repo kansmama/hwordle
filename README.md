@@ -3,14 +3,23 @@
 This is a clone project of the popular word guessing game we all know and love. Made using React, Typescript, Tailwind with Holochain as the backend.
 The clone of repository at https://github.com/cwackerfuss/react-wordle
 has been used and the code modified so that Holochain acts as the backend storage.
-This is an MVP. Only the guesses made by the user are currently stored in the Holochain.
-In future, more items like hwordle stats, wordlist etc can also be moved to Holochain.
+The guesses made by the user and the stats are currently stored in the Holochain. To give a funny twist to the game, the sharing of the game status is filled with emojis. For example:
+
+HWordle 270 4/6
+
+🟨🟩🥶🟨🤢   🤥
+🟨🥴🟨🤧🟨   🤥
+🟩🟩🤧🥵🟩   🤥
+🟩🟩🟩🟩🟩...🥳
+In future, more items like wordlist etc can also be moved to Holochain.
 
 ## Build and run
 
 ### To Run Locally (on Ubuntu / Linux):
 
 Clone the repository and perform the following command line actions:
+
+(If you do not already have Holochain installed on your machine, follow the instructions at this link: https://developer.holochain.org/install/)
 
 On one terminal, compile and run the Holochain environment as below:
 ```bash
