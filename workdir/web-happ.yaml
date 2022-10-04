@@ -1,7 +1,7 @@
 ---
 manifest_version: "1"
-name: react-wordle
+name: hwordle
 ui:
   bundled: "../ui/dist.zip"
 happ_manifest:
-  bundled: "./react-wordle.happ"
+  bundled: "./hwordle.happ"

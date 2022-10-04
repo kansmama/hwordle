@@ -7,11 +7,11 @@ The guesses made by the user and the stats are currently stored in the Holochain
 
 HWordle 270 4/6
 
-🟨🟩🥶🟨🤢   🤥
+🟨🟩🥶🟨🤢 🤥
 
-🟨🥴🟨🤧🟨   🤥
+🟨🥴🟨🤧🟨 🤥
 
-🟩🟩🤧🥵🟩   🤥
+🟩🟩🤧🥵🟩 🤥
 
 🟩🟩🟩🟩🟩...🥳
 
@@ -26,51 +26,25 @@ Clone the repository and perform the following command line actions:
 (If you do not already have Holochain installed on your machine, follow the instructions at this link: https://developer.holochain.org/install/)
 
 On one terminal, compile and run the Holochain environment as below:
+
 ```bash
 $> cd hwordle
 $> nix-shell
-[nix-shell:~/hwordle]$ CARGO_TARGET_DIR=target cargo build --release --target wasm32-unknown-unknown
-[nix-shell:~/hwordle]$ hc dna pack dna/workdir
-[nix-shell:~/hwordle]$ hc app pack workdir
-[nix-shell:~/hwordle]$ hc sandbox generate workdir -a='hwordle' --run=8000
-
-On another terminal, run the client
-
-```bash
-$> cd hwordle
-$> npm install
-$> npm run start
+[nix-shell:~/hwordle]$ npm run dev
 ```
+
 This will open the HWordle web page at http://localhost:3000
 
 To play around with the code, you can
-1) edit the Holochain code written in the dna folder (e.g: definition.rs at dna/integrity_zomes/zome_0_integrity/src/stored_game_state OR stored_game_state.rs at dna/coordinator_zomes/zome_0/src)
-2) edit the client code written in src folder (e.g: the file src/App.tsx)
+
+1. edit the Holochain code written in the dna folder (e.g: definition.rs at dna/integrity_zomes/zome_0_integrity/src/stored_game_state OR stored_game_state.rs at dna/coordinator_zomes/zome_0/src)
+2. edit the client code written in src folder (e.g: the file src/App.tsx)
 
 Every time Holochain code is edited, the dna files and happ files have to be compiled again before running the code.
 
+---
+
 The below are the contents of README file from the original react-wordle and not tested on Holochain:
-
-
-### To build/run docker container:
-
-#### Development
-
-```bash
-$> docker build -t reactle:dev -f docker/Dockerfile .
-$> docker run -d -p 3000:3000 --name reactle-dev reactle:dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in browser.
-
-#### Production
-
-```bash
-$> docker build --target=prod -t reactle:prod -f docker/Dockerfile .
-$> docker run -d -p 80:8080  --name reactle-prod reactle:prod
-```
-
-Open [http://localhost](http://localhost) in browser. See the [entry in the FAQ](#why-does-sharing-of-results-not-work) below about requirements for sharing of results.
 
 ## FAQ
 

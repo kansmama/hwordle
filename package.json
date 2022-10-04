@@ -7,9 +7,15 @@
     "eject": "react-scripts eject",
     "fix": "prettier --write src",
     "lint": "prettier --check src",
-    "start": "react-scripts start",
+    "start:ui": "react-scripts start",
+    "start:agent": "cross-env HC_PORT=$(port) ADMIN_PORT=$(port) concurrently \"npm run start:happ\" \"sleep 5 && npm run start:ui\"",
+    "start:happ": "echo \"starting hc instance: $HC_ID\" && RUST_LOG=warn echo \"pass\" | hc s -f=$ADMIN_PORT --piped generate ./workdir/hwordle.happ --run=$HC_PORT -a hwordle$HC_ID network mdns",
     "test": "react-scripts test",
     "prepare": "husky install",
+    "dev": "npm run build:happ && npm run start:agent && npm run start:ui",
+    "build:happ": "npm run build:dna && hc app pack ./workdir",
+    "build:dna": "npm run build:zome && hc dna pack ./dna/workdir",
+    "build:zome": "CARGO_TARGET_DIR=target cargo build --release --target wasm32-unknown-unknown",
     "hol": "npm run network 2"
   },
   "dependencies": {
@@ -38,7 +44,8 @@
     "react-scripts": "5.0.1",
     "typescript": "^4.5.4",
     "ua-parser-js": "^1.0.2",
-    "web-vitals": "^2.1.3"
+    "web-vitals": "^2.1.3",
+    "svelte": "^3.50.1"
   },
   "eslintConfig": {
     "extends": [
