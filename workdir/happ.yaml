@@ -1,17 +1,15 @@
 ---
-manifest_version: "1"
+manifest_version: '1'
 name: hwordle
 description: ~
 roles:
-
   - id: hwordle
     provisioning:
       strategy: create
       deferred: false
     dna:
-      bundled: "../dna/workdir/dna_0.dna"
+      bundled: '../dna/workdir/dna_0.dna'
       properties: ~
       uuid: ~
       version: ~
       clone_limit: 0
-

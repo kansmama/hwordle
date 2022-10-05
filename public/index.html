@@ -23,24 +23,35 @@
     -->
     <title>HWordle</title>
 
-    <% if (process.env.NODE_ENV === 'production' && process.env.REACT_APP_GOOGLE_MEASUREMENT_ID != null) { %>
-      <!-- Global site tag (gtag.js) - Google Analytics -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GOOGLE_MEASUREMENT_ID%"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+    <% if (process.env.NODE_ENV === 'production' &&
+    process.env.REACT_APP_GOOGLE_MEASUREMENT_ID != null) { %>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GOOGLE_MEASUREMENT_ID%"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
 
-        gtag('config', '%REACT_APP_GOOGLE_MEASUREMENT_ID%');
-      </script>
-    <% } %>
-    <% if (process.env.NODE_ENV === 'production' && process.env.REACT_APP_PLAUSIBLE_DOMAIN != null) { %>
-      <!-- Plausible Analytics -->
-      <script defer data-domain="%REACT_APP_PLAUSIBLE_DOMAIN%" src="https://plausible.io/js/plausible.js"></script>
+      gtag('config', '%REACT_APP_GOOGLE_MEASUREMENT_ID%')
+    </script>
+    <% } %> <% if (process.env.NODE_ENV === 'production' &&
+    process.env.REACT_APP_PLAUSIBLE_DOMAIN != null) { %>
+    <!-- Plausible Analytics -->
+    <script
+      defer
+      data-domain="%REACT_APP_PLAUSIBLE_DOMAIN%"
+      src="https://plausible.io/js/plausible.js"
+    ></script>
     <% } %>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    asasdfasdf
     <div id="root"></div>
     <!--
       This HTML file is a template.

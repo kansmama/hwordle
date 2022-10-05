@@ -16,6 +16,7 @@ import { format } from 'date-fns'
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 import { useEffect, useState } from 'react'
 import Div100vh from 'react-div-100vh'
+import { convertCompilerOptionsFromJson } from 'typescript'
 
 import { AlertContainer } from './components/alerts/AlertContainer'
 import { Grid } from './components/grid/Grid'
@@ -133,16 +134,23 @@ export function holMount() {
     console.log('in hMount before signalCb')
 
     const signalCb = (signal: AppSignal) => {
+      console.log('SIGNAL:', signal)
       // impl...
       // resolve()
     }
     console.log('in hMount after signalCb, before connect')
     // const TIMEOUT = 12000
     // default timeout is set to 12000
-    client = await AppWebsocket.connect(`ws://localhost:8000`, 12000, signalCb)
+    try {
+      client = await AppWebsocket.connect(`ws://localhost:8000`)
+    } catch (e) {
+      console.log('AppWebsocket failed:', e)
+    }
     if (!client) {
       console.log('Appwebsocket.connect is null')
     }
+    console.log('Appwebsocket.connect:', client)
+
     //let {appInfo}: InstalledAppInfo;
     // document.createElement("script");
     // setContext(appInfoContext, { getAppInfo: () => appInfo });
@@ -772,15 +780,22 @@ function App() {
       // resolve()
     }
     console.log('in hoMount after signalCb, before connect')
+    const appPort = process.env.REACT_APP_HC_PORT
+    console.log('connecting to:', appPort, process.env)
     // const TIMEOUT = 12000
     // default timeout is set to 12000
-    client = await AppWebsocket.connect(`ws://localhost:8000`, 12000, signalCb)
+    client = await AppWebsocket.connect(
+      `ws://localhost:${appPort}`,
+      12000,
+      signalCb
+    )
     if (!client) {
       console.log('Appwebsocket.connect is null')
     }
 
     const insAppId = 'hwordle'
     //let appInfoReq: AppInfoRequest = {insAppId}
+    console.log('{ installed_app_id: insAppId }', insAppId)
     appInfo = await client.appInfo({ installed_app_id: insAppId })
     if (!appInfo) {
       console.log('appInfo after await - null')

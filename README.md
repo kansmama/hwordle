@@ -30,7 +30,7 @@ On one terminal, compile and run the Holochain environment as below:
 ```bash
 $> cd hwordle
 $> nix-shell
-[nix-shell:~/hwordle]$ npm run dev
+[nix-shell:~/hwordle]$ npm run start
 ```
 
 This will open the HWordle web page at http://localhost:3000
