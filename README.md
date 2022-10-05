@@ -25,11 +25,12 @@ Clone the repository and perform the following command line actions:
 
 (If you do not already have Holochain installed on your machine, follow the instructions at this link: https://developer.holochain.org/install/)
 
-On one terminal, compile and run the Holochain environment as below:
+Then simply:
 
 ```bash
 $> cd hwordle
 $> nix-shell
+[nix-shell:~/hwordle]$ npm install
 [nix-shell:~/hwordle]$ npm run start
 ```
 
@@ -41,6 +42,16 @@ To play around with the code, you can
 2. edit the client code written in src folder (e.g: the file src/App.tsx)
 
 Every time Holochain code is edited, the dna files and happ files have to be compiled again before running the code.
+
+### To Build as a webhapp for the launcher:
+
+Assuming you are allready in the nix-shell of the hwordle directory:
+
+```bash
+[nix-shell:~/hwordle]$ npm run package
+```
+
+This will build everthing and put an `hwordle.webhapp` file in the `workdir` directory, which you can install manually on the launcher!
 
 ---
 
