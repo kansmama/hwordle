@@ -39,3 +39,4 @@ dist/
 *.webhapp
 *.tsbuildinfo
 .running
+ui.zip

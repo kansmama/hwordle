@@ -1,7 +1,7 @@
 ---
-manifest_version: "1"
+manifest_version: '1'
 name: hwordle
 ui:
-  bundled: "../ui/dist.zip"
+  bundled: './ui.zip'
 happ_manifest:
-  bundled: "./hwordle.happ"
+  bundled: './hwordle.happ'
