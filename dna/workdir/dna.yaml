@@ -1,0 +1,17 @@
+---
+manifest_version: "1"
+name: dna_0
+integrity:
+  uuid: 00000000-0000-0000-0000-000000000000
+  properties: ~
+  origin_time: 2022-08-26T05:58:08.535Z
+  zomes:
+    - name: zome_0_integrity
+      bundled: ../../target/wasm32-unknown-unknown/release/zome_0_integrity.wasm
+
+coordinator:
+  zomes:
+    - name: zome_0
+      bundled: ../../target/wasm32-unknown-unknown/release/zome_0.wasm
+      dependencies:
+        - name: zome_0_integrity
