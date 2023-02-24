@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@holochain-playground/cli": "^0.0.11",
-    "@trivago/prettier-plugin-sort-imports": "^3.3.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/react-datepicker": "^4.4.2",
     "autoprefixer": "^10.4.4",
     "concurrently": "^6.2.1",
